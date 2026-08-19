@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.idea/
+.vscode/
+
+# Generated data and reports
+data/clean/*
+!data/clean/.gitkeep
+reports/*
+!reports/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db

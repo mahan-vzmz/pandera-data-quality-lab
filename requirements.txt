@@ -1,0 +1,4 @@
+pandera[pandas]
+pandas
+jupyterlab
+pytest

@@ -1,0 +1,6 @@
+order_id,customer_id,product_id,quantity,unit_price,discount,total,status,order_date
+2001,C101,P101,2,100.0,0.10,180.0,paid,2026-08-01
+2002,C102,P102,1,50.0,0.00,50.0,pending,2026-08-02
+2003,C103,P103,3,20.0,0.25,45.0,shipped,2026-08-03
+2004,C104,P104,1,250.0,0.20,200.0,cancelled,2026-08-04
+2005,C105,P105,4,15.0,0.00,60.0,paid,2026-08-05

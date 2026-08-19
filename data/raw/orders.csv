@@ -1,0 +1,16 @@
+order_id,customer_id,product_id,quantity,unit_price,discount,total,status,order_date,internal_note
+1001,C001,P001,2,1200.0,0.10,2160.0,paid,2026-08-01,priority customer
+1002,C002,P002,1,25.0,0.00,25.0,shipped,2026-08-02,
+1003,C003,P003,0,80.0,0.00,0.0,paid,2026-08-03,zero quantity
+1004,C004,P004,3,-50.0,0.10,-135.0,pending,2026-08-04,negative price
+1005,C005,P005,1,300.0,1.20,-60.0,paid,2026-08-05,discount over 100 percent
+1006,C006,P006,2,75.0,0.10,100.0,shipped,2026-08-06,wrong total
+1007,C007,P007,2,40.0,0.00,80.0,UNKNOWN,2026-08-07,invalid status
+1008,C008,P008,1,50.0,0.00,50.0,cancelled,2026-08-08,valid row
+1008,C009,P009,1,70.0,0.00,70.0,paid,2026-08-09,duplicate order id
+1010,C010,P010,,90.0,0.10,81.0,paid,2026-08-10,missing quantity
+1011,C011,P011,two,45.0,0.00,90.0,paid,2026-08-11,text quantity
+1012,C012,P012,1,100.0,0.15,85.0,paid,2026-02-30,invalid calendar date
+1013,,P013,2,30.0,0.00,60.0,shipped,2026-08-13,missing customer id
+1014,C014,P014,1,150.0,0.00,150.0,refunded,2026-08-14,status outside contract
+1015,C015,P015,2,60.0,-0.05,126.0,paid,2026-08-15,negative discount
