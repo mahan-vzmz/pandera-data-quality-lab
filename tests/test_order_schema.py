@@ -1,4 +1,4 @@
-"""Phase 2 tests for the OrderSchema."""
+"""Core OrderSchema regression tests through Phase 3."""
 
 from __future__ import annotations
 
@@ -10,7 +10,6 @@ from pandera_lab.schemas import OrderSchema
 
 
 def make_valid_orders() -> pd.DataFrame:
-    """Return a small dataframe with Phase-2-valid order data."""
     return pd.DataFrame(
         {
             "order_id": [2001, 2002, 2003],
@@ -83,8 +82,7 @@ def test_invalid_status_fails() -> None:
         OrderSchema.validate(df)
 
 
-def test_wrong_total_still_passes_in_phase_2() -> None:
-    """Cross-column total validation is intentionally a Phase-4 concern."""
+def test_wrong_total_still_passes_until_phase_4() -> None:
     df = make_valid_orders()
     df.loc[0, "total"] = 999_999.0
 
@@ -92,19 +90,17 @@ def test_wrong_total_still_passes_in_phase_2() -> None:
     assert validated.loc[0, "total"] == 999_999.0
 
 
-def test_extra_column_is_allowed_in_phase_2() -> None:
-    """strict=False is an intentional temporary design decision."""
+def test_extra_column_is_filtered_in_phase_3() -> None:
     df = make_valid_orders()
     df["internal_note"] = ["a", "b", "c"]
 
     validated = OrderSchema.validate(df)
-    assert "internal_note" in validated.columns
+    assert "internal_note" not in validated.columns
 
 
-def test_order_date_must_already_be_datetime_in_phase_2() -> None:
-    """Phase 2 validates dtype; Phase 3 will parse/coerce raw CSV dates."""
+def test_string_order_date_is_coerced_in_phase_3() -> None:
     df = make_valid_orders()
     df["order_date"] = df["order_date"].dt.strftime("%Y-%m-%d")
 
-    with pytest.raises(pa.errors.SchemaError):
-        OrderSchema.validate(df)
+    validated = OrderSchema.validate(df)
+    assert pd.api.types.is_datetime64_any_dtype(validated["order_date"])

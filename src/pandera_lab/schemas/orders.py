@@ -1,18 +1,16 @@
 """Pandera contract for order data.
 
-Phase 2 scope:
-- DataFrameModel
-- typed Series fields
-- uniqueness
-- numeric range constraints
-- allowed status categories
+Phase 3 scope:
+- explicit null policy
+- per-field dtype coercion
+- datetime coercion
+- strict filtering of unexpected columns
+- lazy validation compatibility
 
-Deliberately deferred to later phases:
-- coercion and CSV parsing strategy
-- explicit nullable handling
-- lazy validation reports
-- strict/filter behavior for extra columns
-- cross-column validation of ``total``
+Still deliberately deferred to Phase 4:
+- custom column checks
+- dataframe-level / cross-column business rules
+- validation of ``total == unit_price * quantity * (1 - discount)``
 """
 
 import pandera.pandas as pa
@@ -24,30 +22,55 @@ ALLOWED_ORDER_STATUSES = ("pending", "paid", "shipped", "cancelled")
 
 
 class OrderSchema(pa.DataFrameModel):
-    """Column-level data contract for an analytical order record."""
+    """Validated analytical shape for an order record."""
 
-    order_id: Series[int] = pa.Field(unique=True)
-    customer_id: Series[str]
-    product_id: Series[str]
-    quantity: Series[int] = pa.Field(gt=0)
-    unit_price: Series[float] = pa.Field(gt=0)
-    discount: Series[float] = pa.Field(ge=0, le=1)
+    order_id: Series[int] = pa.Field(
+        unique=True,
+        nullable=False,
+        coerce=True,
+    )
 
-    # In Phase 2 we only validate the dtype of total.
-    # The relationship:
-    # total = unit_price * quantity * (1 - discount)
-    # is intentionally deferred to Phase 4.
-    total: Series[float]
+    # Text identifiers are intentionally *not* coerced in Phase 3.
+    # A missing identifier should remain visibly missing and fail validation.
+    customer_id: Series[str] = pa.Field(nullable=False)
+    product_id: Series[str] = pa.Field(nullable=False)
 
-    status: Series[str] = pa.Field(isin=ALLOWED_ORDER_STATUSES)
+    quantity: Series[int] = pa.Field(
+        gt=0,
+        nullable=False,
+        coerce=True,
+    )
 
-    # The schema expects a real pandas datetime dtype.
-    # Turning raw CSV strings into datetimes is an ingestion/coercion problem
-    # that will be solved in Phase 3.
-    order_date: Series[DateTime]
+    unit_price: Series[float] = pa.Field(
+        gt=0,
+        nullable=False,
+        coerce=True,
+    )
+
+    discount: Series[float] = pa.Field(
+        ge=0,
+        le=1,
+        nullable=False,
+        coerce=True,
+    )
+
+    # The total formula is a Phase-4 dataframe-level business rule.
+    total: Series[float] = pa.Field(
+        nullable=False,
+        coerce=True,
+    )
+
+    status: Series[str] = pa.Field(
+        isin=ALLOWED_ORDER_STATUSES,
+        nullable=False,
+    )
+
+    order_date: Series[DateTime] = pa.Field(
+        nullable=False,
+        coerce=True,
+    )
 
     class Config:
-        # Phase 2 deliberately permits extra columns such as ``internal_note``.
-        # We will compare strict=False, strict=True, and strict="filter"
-        # explicitly in Phase 3.
-        strict = False
+        # Operational/source-only columns such as ``internal_note`` are accepted
+        # at the input boundary but removed from the validated analytical frame.
+        strict = "filter"
