@@ -4,7 +4,7 @@ This repository is strongest when presented as a **data-contract and reliability
 
 ## 30-second project explanation
 
-> I built a staged data-quality pipeline around unreliable e-commerce CSV data. Pandera schemas enforce structure, coercion, nullability, uniqueness, categorical and cross-column business rules. Invalid source batches produce structured reports, while internal transformations use typed input/output dataframe contracts. I added regression/integration tests, coverage and lint gates, package-build checks, and a Python-version CI matrix.
+> I built a staged data-quality pipeline around unreliable e-commerce CSV data. Pandera schemas enforce structure, coercion, nullability, uniqueness, categorical and cross-column business rules. Invalid source batches produce structured reports, while internal transformations use typed input/output dataframe contracts. I added regression/integration tests, coverage and lint gates, and a multi-version Python CI matrix.
 
 ## Resume bullet examples
 
@@ -12,7 +12,7 @@ Adapt these to your real usage; do not invent production scale or performance nu
 
 - Built a schema-driven Python data-quality pipeline with Pandera and pandas, validating raw CSV inputs, business invariants, and typed transformation outputs.
 - Implemented structured lazy-validation reporting, stale-artifact safety, and explicit separation between source-data failures and transformation defects.
-- Added unit, contract, regression, and end-to-end tests plus automated lint, coverage, package-build, and multi-version GitHub Actions gates.
+- Added unit, contract, regression, and end-to-end tests plus automated lint, coverage, and multi-version GitHub Actions CI gates.
 - Created a seven-phase educational repository with Jupyter notebooks, challenges, interview questions, and reusable documentation.
 
 ## What to show in an interview

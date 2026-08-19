@@ -39,5 +39,5 @@ Then rewrite it as a semantic test.
 Read `.github/workflows/ci.yml` and answer:
 
 1. Why is `fail-fast: false` useful in a Python matrix?
-2. Why is coverage enforced in a dedicated job rather than every matrix entry?
-3. Why is the package build a separate quality gate?
+2. Why is coverage enforced alongside testing in the CI matrix?
+3. How does the local `scripts/quality_gate.py` maintain parity with CI?

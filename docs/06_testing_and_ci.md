@@ -114,35 +114,30 @@ F
 
 The project deliberately avoids enabling a huge style rule set merely to create noise in an educational repository.
 
-## 8. Package-build gate
+## 8. Quality gates in CI
 
-A repository can have passing tests but broken packaging metadata.
+A robust CI workflow runs multiple checks on every push and PR:
 
-CI also runs:
-
-```bash
-python -m build
-```
-
-so the `pyproject.toml` release metadata and source package layout are exercised.
+- **Compilation**: `python -m compileall` verifies syntax across the entire codebase.
+- **Linting**: `ruff check .` catches errors and style defects early.
+- **Testing & Coverage**: `pytest` executes tests and enforces the 90% coverage threshold.
 
 ## 9. CI matrix
 
-The workflow tests Python:
+The workflow tests supported Python versions:
 
 ```text
 3.10
 3.12
-3.14
 ```
 
-This samples the lower supported boundary, a middle version, and the newest supported CPython generation for the pinned Pandera release.
+This samples the lower supported boundary and modern stable CPython generations for the pinned Pandera release.
 
 The workflow uses current major GitHub actions:
 
 ```yaml
-actions/checkout@v7
-actions/setup-python@v7
+actions/checkout@v4
+actions/setup-python@v5
 ```
 
 ## 10. Local and CI parity
