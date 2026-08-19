@@ -5,28 +5,28 @@
 [![Tests](https://img.shields.io/badge/tests-60%20passed-brightgreen.svg)](.github/workflows/ci.yml)
 [![Coverage](https://img.shields.io/badge/coverage-91%25-brightgreen.svg)](pyproject.toml)
 
-> **یک مینی‌پروژه آموزشی گام‌به‌گام** برای یادگیری **Pandera**، **pandas** و اصول مهندسی کیفیت داده.
+> **A problem-driven, step-by-step educational project** for learning **Pandera**, **pandas**, executable **data contracts**, and production-style **data quality engineering**.
 >
-> از یک فایل CSV نامعتبر شروع می‌کنیم و قدم‌به‌قدم یک pipeline قابل اعتماد می‌سازیم.
+> Starting from an untrusted, messy CSV, we progressively build a reliable data validation and transformation pipeline.
 
 ---
 
-## 🎯 مسئله
+## 🎯 Problem Statement
 
-یک تیم تحلیل داده فایل `orders.csv` رو از یک سیستم بالادستی دریافت می‌کنه. این فایل ممکنه شامل مشکلات زیر باشه:
+An analytics team receives `orders.csv` from an upstream service. The incoming raw data may contain:
 
+```text
+❌ Wrong data types             ❌ Missing values (nulls)
+❌ Duplicate order IDs          ❌ Invalid categorical values
+❌ Invalid calendar dates       ❌ Unexpected metadata columns
+❌ Incorrect monetary totals
 ```
-❌ نوع داده اشتباه          ❌ مقادیر گمشده
-❌ شناسه‌های تکراری          ❌ دسته‌بندی نامعتبر
-❌ تاریخ‌های نامعتبر         ❌ ستون‌های اضافه
-❌ محاسبات مالی اشتباه
-```
 
-**سیستم‌های downstream هرگز نباید کورکورانه به این داده اعتماد کنن.**
+**Downstream analytical pipelines should never blindly trust this raw source.**
 
 ---
 
-## 🏗️ معماری نهایی
+## 🏗️ Architecture
 
 ```mermaid
 flowchart TD
@@ -41,53 +41,53 @@ flowchart TD
     I --> J["📁 Trusted enriched CSV"]
 ```
 
-### تصمیم طراحی کلیدی
+### Key Design Decision
 
-| نوع شکست | معنا | واکنش |
+| Failure Category | Meaning | System Behavior |
 |---|---|---|
-| **داده ورودی بد** | نتیجه عملیاتی مورد انتظار | گزارش ساختاریافته، بدون خروجی |
-| **خروجی تبدیل بد** | باگ برنامه‌نویسی | exception فوری، هرگز پنهان نشه |
+| **Bad source data** | Expected operational occurrence | Structured error reports, no trusted output generated |
+| **Bad transformation output** | Programming/logic defect | Exception propagates immediately; never masked |
 
 ---
 
-## 📚 مسیر یادگیری ۷ فازی
+## 📚 7-Phase Learning Path
 
-| فاز | سؤال | چی یاد می‌گیری |
+| Phase | Question / Challenge | Core Concepts |
 |:---:|---|---|
-| 1️⃣ | چرا نمی‌تونیم به CSV اعتماد کنیم؟ | data contracts، بررسی داده |
-| 2️⃣ | چطور اولین قرارداد رو بنویسیم؟ | `DataFrameModel`، `Field` |
-| 3️⃣ | با ورودی واقعی چیکار کنیم؟ | coercion، null، lazy validation |
-| 4️⃣ | اگه ستون‌ها جدا درست ولی با هم ناسازگار باشن؟ | custom/cross-column checks |
-| 5️⃣ | چطور قرارداد تبدیل‌ها رو محافظت کنه؟ | `DataFrame[Schema]`، `check_types` |
-| 6️⃣ | چطور از regression جلوگیری کنیم؟ | test architecture، coverage، CI |
-| 7️⃣ | آیا می‌تونیم سیستم رو توضیح بدیم و گسترش بدیم؟ | architecture، capstone |
+| 1️⃣ | Why can’t we trust raw CSVs? | Data contracts, manual inspection vs automated checks |
+| 2️⃣ | How do we define our first schema? | `DataFrameModel`, `Field`, dtype & range validation |
+| 3️⃣ | How do we handle real-world messy input? | Type coercion, null policies, lazy validation, error reporting |
+| 4️⃣ | What if columns are valid individually but inconsistent together? | Custom single-column (`@pa.check`) & cross-column (`@pa.dataframe_check`) rules |
+| 5️⃣ | How do contracts protect transformations? | `DataFrame[Schema]`, `@pa.check_types`, typed input/output boundaries |
+| 6️⃣ | How do we prevent regressions? | Test architecture, fixtures, code coverage, CI automation |
+| 7️⃣ | Can we explain and extend the system? | Architecture design, cheat sheet, capstone challenge |
 
-> 📖 از [`START_HERE.md`](START_HERE.md) شروع کن.
+> 📖 Get started with [`START_HERE.md`](START_HERE.md).
 
 ---
 
-## 🔧 نصب و اجرا
+## 🔧 Installation & Quick Start
 
 ```bash
-# نصب
+# 1. Install package in editable mode with dev dependencies
 python -m pip install -e ".[dev]"
 
-# اجرای pipeline
+# 2. Run the end-to-end pipeline example
 python examples/phase5_run_pipeline.py
 
-# اجرای تست‌ها
+# 3. Run unit and integration tests
 python -m pytest -q
 
-# اجرای quality gate
+# 4. Run the local quality gate (lint + test + coverage)
 python scripts/quality_gate.py
 
-# اجرای notebook‌ها
+# 5. Launch interactive notebooks
 jupyter lab
 ```
 
 ---
 
-## 📦 قرارداد اصلی داده
+## 📦 Core Data Contract
 
 ```python
 class OrderSchema(pa.DataFrameModel):
@@ -102,9 +102,9 @@ class OrderSchema(pa.DataFrameModel):
     order_date:  Series[DateTime] = pa.Field(nullable=False, coerce=True)
 ```
 
-به‌علاوه بررسی non-blank بودن شناسه‌ها و فرمول محاسبه total.
+Includes custom non-blank string checks on identifiers and cross-column business formula validation for order totals with floating-point tolerance.
 
-## 🔄 تبدیل تایپ‌شده
+## 🔄 Typed Transformation
 
 ```python
 @pa.check_types(lazy=True)
@@ -114,67 +114,67 @@ def enrich_orders(
     ...
 ```
 
-فیلدهای خروجی:
+Derived features validated by `EnrichedOrderSchema`:
 
-| فیلد | فرمول |
+| Derived Field | Calculation / Meaning |
 |---|---|
-| `gross_amount` | `unit_price × quantity` |
-| `discount_amount` | `gross_amount × discount` |
-| `net_amount` | `total` |
+| `gross_amount` | `unit_price * quantity` |
+| `discount_amount` | `gross_amount * discount` |
+| `net_amount` | `total` (equals `gross_amount - discount_amount`) |
 | `order_month` | `YYYY-MM(order_date)` |
 | `is_discounted` | `discount > 0` |
 
 ---
 
-## 🗂️ ساختار پروژه
+## 🗂️ Project Structure
 
-```
+```text
 pandera-data-quality-lab/
-├── .github/workflows/ci.yml    # CI pipeline
+├── .github/workflows/ci.yml    # CI pipeline (GitHub Actions)
 ├── data/
-│   ├── raw/                    # داده خام نامعتبر
-│   ├── reference/              # داده مرجع معتبر
-│   └── clean/                  # خروجی تولیدشده
-├── notebooks/                  # 7 notebook آموزشی
-├── docs/                       # درس‌ها + معماری + cheat sheet
-├── challenges/                 # تمرین‌های عملی
-├── interview/                  # سؤالات مصاحبه
-├── solutions/                  # پاسخ‌های مرجع
-├── examples/                   # اسکریپت‌های نمونه
-├── scripts/quality_gate.py     # quality gate لوکال
+│   ├── raw/                    # Raw untrusted test data (with anomalies)
+│   ├── reference/              # Known-good reference dataset
+│   └── clean/                  # Enriched clean output directory
+├── notebooks/                  # 7 progressive Jupyter notebooks
+├── docs/                       # Detailed lessons, architecture & cheat sheet
+├── challenges/                 # Problem-driven hands-on exercises
+├── interview/                  # 160+ interview prep questions by phase
+├── solutions/                  # Reference solutions & answer guides
+├── examples/                   # Standalone runnable Python scripts
+├── scripts/quality_gate.py     # Local quality verification script
 ├── src/pandera_lab/
-│   ├── schemas/                # OrderSchema + EnrichedOrderSchema
-│   ├── business_rules.py       # منطق دامنه
-│   ├── ingestion.py            # بارگذاری CSV
-│   ├── validation.py           # مرز اعتبارسنجی
-│   ├── reporting.py            # گزارش خطاها
-│   ├── transformations.py      # تبدیل تایپ‌شده
-│   └── pipeline.py             # ارکستراسیون end-to-end
-├── tests/                      # 60 تست (91%+ پوشش)
-└── pyproject.toml
+│   ├── schemas/                # OrderSchema, EnrichedOrderSchema, historical schemas
+│   ├── business_rules.py       # Pure domain calculations & tolerance logic
+│   ├── ingestion.py            # CSV loading utility
+│   ├── validation.py           # Validation boundary & result encapsulation
+│   ├── reporting.py            # Structured failure reporting
+│   ├── transformations.py      # Typed feature engineering
+│   └── pipeline.py             # End-to-end pipeline orchestration
+├── tests/                      # 60 pytest tests (>91% coverage)
+└── pyproject.toml              # Build config & dependencies
 ```
 
-## 🎓 پایداری آموزشی
+## 🎓 Educational Stability
 
-اسکیمای فعلی تکامل پیدا می‌کنه، ولی notebook‌های قدیمی از اسکیماهای تاریخی فریزشده استفاده می‌کنن:
+As the production-facing `OrderSchema` evolves, earlier notebooks remain pinned to frozen historical contracts:
 
-```
+```text
 Phase2OrderSchema   →  notebook 02
 Phase3OrderSchema   →  notebook 03
 Phase4OrderSchema   →  notebook 04
 ```
 
-این تضمین می‌کنه که درس‌های قدیمی بدون تغییر رفتار قابل اجرا بمونن.
+This guarantees that earlier exercises remain fully reproducible without unexpected behavior changes as later features are introduced.
 
-## 📋 Quick Reference
+## 📋 Reference Guides
 
-برای خلاصه سینتکس و تصمیم‌ها: [`docs/cheat_sheet.md`](docs/cheat_sheet.md)
+- **Syntax & Decision Cheat Sheet**: [`docs/cheat_sheet.md`](docs/cheat_sheet.md)
+- **Portfolio & Interview Discussion Guide**: [`docs/portfolio_guide.md`](docs/portfolio_guide.md)
+- **Architecture Overview**: [`docs/07_architecture.md`](docs/07_architecture.md)
 
-برای راهنمای رزومه و مصاحبه: [`docs/portfolio_guide.md`](docs/portfolio_guide.md)
+## ⚠️ Scope & Limitations
 
-## ⚠️ محدودیت‌ها
-
-این ریپازیتوری طراحی data-contract و اصول مهندسی رو روی دیتاست‌های کوچک سینتتیک نشون می‌ده. ادعای throughput پروداکشن، reliability استقرار، نتایج بنچمارک، یا صفر باگ **نمی‌کنه**.
+This repository demonstrates data contract design and engineering discipline on small synthetic datasets. It is designed for educational, portfolio, and best-practice demonstration purposes rather than high-throughput production deployment.
 
 ## 📄 License
 
