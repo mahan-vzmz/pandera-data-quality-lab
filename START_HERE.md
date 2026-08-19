@@ -1,48 +1,48 @@
 # Start Here
 
-Follow the repository in phase order.
+## Fast path — understand the final project
 
-## Phase 1 — Understand the problem
+1. Read `README.md`.
+2. Read `docs/07_architecture.md`.
+3. Run `notebooks/07_capstone_audit.ipynb`.
+4. Run `python scripts/quality_gate.py`.
+5. Review `docs/portfolio_guide.md` before presenting the project.
 
-1. `notebooks/01_why_data_validation.ipynb`
-2. `docs/01_order_data_contract.md`
-3. `challenges/01_order_schema.md`
-
-## Phase 2 — Build the first executable contract
-
-1. `docs/02_first_schema.md`
-2. `notebooks/02_build_first_schema.ipynb`
-3. `challenges/02_schema_debugging.md`
-4. `interview/02_schema_design.md`
-
-## Phase 3 — Validate real messy input
-
-1. Read `docs/03_real_input_validation.md`.
-2. Inspect the evolved `src/pandera_lab/schemas/orders.py`.
-3. Run `notebooks/03_real_input_validation.ipynb`.
-4. Run the example:
-
-```bash
-python examples/phase3_validate_raw.py
-```
-
-5. Inspect generated files in `reports/`.
-6. Solve `challenges/03_messy_input_and_error_reports.md`.
-7. Answer `interview/03_real_input_validation.md`.
-8. Run:
-
-```bash
-pytest
-```
-
-## Phase-3 learning boundary
-
-Phase 3 intentionally does **not** add the cross-column `total` rule yet.
-
-A numeric but incorrect total can still pass:
+## Full learning path
 
 ```text
-total != unit_price * quantity * (1 - discount)
+01 why data validation
+02 first schema
+03 messy input + errors
+04 business rules
+05 typed pipeline
+06 testing + CI
+07 capstone audit
 ```
 
-That is the central problem for Phase 4.
+Corresponding notebooks are in `notebooks/` and detailed lessons are in `docs/`.
+
+## Practice path
+
+Each phase has:
+
+```text
+challenges/
+interview/
+solutions/
+```
+
+Try the challenge and interview questions before opening the reference solutions.
+
+## Setup
+
+```bash
+python -m pip install -e ".[dev]"
+jupyter lab
+```
+
+## Final quality gate
+
+```bash
+python scripts/quality_gate.py
+```

@@ -82,12 +82,12 @@ def test_invalid_status_fails() -> None:
         OrderSchema.validate(df)
 
 
-def test_wrong_total_still_passes_until_phase_4() -> None:
+def test_wrong_total_fails_from_phase_4_onward() -> None:
     df = make_valid_orders()
     df.loc[0, "total"] = 999_999.0
 
-    validated = OrderSchema.validate(df)
-    assert validated.loc[0, "total"] == 999_999.0
+    with pytest.raises(pa.errors.SchemaError):
+        OrderSchema.validate(df)
 
 
 def test_extra_column_is_filtered_in_phase_3() -> None:

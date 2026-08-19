@@ -1,5 +1,6 @@
 # Challenge 02 — Debug the First Schema
 
+> **Historical reproducibility:** In Phase 4+ the main `OrderSchema` is stricter. The repository keeps `Phase2OrderSchema` and `Phase3OrderSchema` so the earlier learning behavior can still be reproduced exactly.
 Use `OrderSchema` from Phase 2.
 
 Do not use `coerce=True`, `lazy=True`, or dataframe-level checks yet.

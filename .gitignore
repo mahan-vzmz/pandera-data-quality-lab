@@ -3,10 +3,21 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 .pytest_cache/
+.ruff_cache/
 
 # Virtual environments
 .venv/
 venv/
+
+# Coverage / quality output
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Packaging output
+build/
+dist/
 
 # Jupyter
 .ipynb_checkpoints/

@@ -1,4 +1,4 @@
-"""Validation helpers for Phase 3."""
+"""Validation boundary used through Phase 4."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ _FAILURE_CASE_COLUMNS = [
 
 @dataclass(frozen=True)
 class ValidationResult:
-    """Structured result returned by the Phase-3 validation boundary."""
+    """Structured result returned by the validation boundary."""
 
     is_valid: bool
     data: pd.DataFrame | None

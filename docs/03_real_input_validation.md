@@ -1,5 +1,6 @@
 # Phase 3 — Real Input Validation
 
+> **Historical reproducibility:** In Phase 4+ the main `OrderSchema` is stricter. The repository keeps `Phase2OrderSchema` and `Phase3OrderSchema` so the earlier learning behavior can still be reproduced exactly.
 Phase 2 defined the contract for already-typed data.
 
 Phase 3 solves a harder problem:

@@ -1,5 +1,6 @@
 # Phase 2 — Build the First Order Schema
 
+> **Historical reproducibility:** In Phase 4+ the main `OrderSchema` is stricter. The repository keeps `Phase2OrderSchema` and `Phase3OrderSchema` so the earlier learning behavior can still be reproduced exactly.
 Phase 1 answered: **what should a valid order look like?**
 
 Phase 2 turns that contract into executable Pandera code.

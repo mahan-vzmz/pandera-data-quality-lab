@@ -1,5 +1,6 @@
 # Challenge 03 — Messy Input and Error Triage
 
+> **Historical reproducibility:** In Phase 4+ the main `OrderSchema` is stricter. The repository keeps `Phase2OrderSchema` and `Phase3OrderSchema` so the earlier learning behavior can still be reproduced exactly.
 Use the Phase-3 project code.
 
 ## A. Predict coercion behavior

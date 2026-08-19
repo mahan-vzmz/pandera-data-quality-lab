@@ -30,11 +30,13 @@ The goal is to translate this contract into Pandera code gradually.
 
 - required
 - non-null string
+- must contain non-whitespace characters
 
 ### `product_id`
 
 - required
 - non-null string
+- must contain non-whitespace characters
 
 ### `quantity`
 
@@ -78,7 +80,7 @@ The `total` column must match:
 total = unit_price * quantity * (1 - discount)
 ```
 
-Because floating-point calculations can have tiny precision differences, later we will discuss whether exact equality is always the best validation strategy.
+Because floating-point calculations can have tiny precision differences, Phase 4 validates this relationship with a small absolute tolerance rather than raw exact equality.
 
 ## Extra columns
 
