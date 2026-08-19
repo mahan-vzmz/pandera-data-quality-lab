@@ -25,7 +25,6 @@ Open these files in order:
 4. `src/pandera_lab/transformations.py` — typed transformation
 5. `src/pandera_lab/pipeline.py` — operational semantics
 6. `tests/test_phase6_reliability.py` — reliability thinking
-7. `.github/workflows/ci.yml` — automation
 
 ## Strong discussion topics
 

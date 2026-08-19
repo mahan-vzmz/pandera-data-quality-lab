@@ -1,47 +1,45 @@
 # Start Here
 
-## Fast path — understand the final project
-
-1. Read `README.md`.
-2. Read `docs/07_architecture.md`.
-3. Run `notebooks/07_capstone_audit.ipynb`.
-4. Run `python scripts/quality_gate.py`.
-5. Review `docs/portfolio_guide.md` before presenting the project.
-
-## Full learning path
-
-```text
-01 why data validation
-02 first schema
-03 messy input + errors
-04 business rules
-05 typed pipeline
-06 testing + CI
-07 capstone audit
-```
-
-Corresponding notebooks are in `notebooks/` and detailed lessons are in `docs/`.
-
-## Practice path
-
-Each phase has:
-
-```text
-challenges/
-interview/
-solutions/
-```
-
-Try the challenge and interview questions before opening the reference solutions.
-
-## Setup
+## ⚡ Quick setup
 
 ```bash
 python -m pip install -e ".[dev]"
-jupyter lab
 ```
 
-## Final quality gate
+## 🎯 Fast path — see the final project
+
+1. Read `README.md`
+2. Read `docs/07_architecture.md`
+3. Run `notebooks/07_capstone_audit.ipynb`
+4. Run `python scripts/quality_gate.py`
+
+## 📚 Full learning path
+
+Work through the notebooks in `notebooks/` in order:
+
+| # | Notebook | Lesson |
+|---|---|---|
+| 01 | why data validation | data contracts, inspection |
+| 02 | first schema | `DataFrameModel`, `Field` |
+| 03 | messy input + errors | coercion, nulls, lazy validation |
+| 04 | business rules | custom/cross-column checks |
+| 05 | typed pipeline | `DataFrame[Schema]`, `check_types` |
+| 06 | testing + CI | test architecture, coverage |
+| 07 | capstone audit | architecture review |
+
+Detailed lessons are in `docs/`.
+
+## 🏋️ Practice path
+
+Each phase has exercises and interview questions:
+
+```text
+challenges/   ← try these first
+interview/    ← test your knowledge
+solutions/    ← check your answers
+```
+
+## ✅ Quality gate
 
 ```bash
 python scripts/quality_gate.py

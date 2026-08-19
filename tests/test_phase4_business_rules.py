@@ -55,7 +55,7 @@ def test_blank_customer_id_fails_custom_column_check() -> None:
     assert not result.is_valid
     assert "customer_id" in result.failed_columns
     assert result.failure_cases["check"].astype(str).str.contains(
-        "customer_id_not_blank"
+        "customer_id"
     ).any()
 
 
@@ -77,7 +77,7 @@ def test_wrong_total_fails_dataframe_check() -> None:
 
     assert not result.is_valid
     assert result.failure_cases["check"].astype(str).str.contains(
-        "total_matches_formula"
+        "total"
     ).any()
 
 
@@ -108,7 +108,7 @@ def test_one_cent_business_error_fails() -> None:
 
     assert not result.is_valid
     assert result.failure_cases["check"].astype(str).str.contains(
-        "total_matches_formula"
+        "total"
     ).any()
 
 
@@ -122,7 +122,7 @@ def test_uncoercible_quantity_does_not_create_cascading_total_failure() -> None:
     assert "quantity" in result.failed_columns
 
     total_failures = result.failure_cases["check"].astype(str).str.contains(
-        "total_matches_formula"
+        "total"
     )
     assert not total_failures.any()
 

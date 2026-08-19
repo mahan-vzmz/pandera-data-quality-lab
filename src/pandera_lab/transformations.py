@@ -27,9 +27,9 @@ def enrich_orders(
     discount_amount = expected_discount_amount(df)
 
     return df.assign(
-        gross_amount=gross_amount.astype(float),
-        discount_amount=discount_amount.astype(float),
-        net_amount=df["total"].astype(float),
+        gross_amount=gross_amount,
+        discount_amount=discount_amount,
+        net_amount=df["total"],
         order_month=df["order_date"].dt.strftime("%Y-%m"),
         is_discounted=df["discount"].gt(0),
     )

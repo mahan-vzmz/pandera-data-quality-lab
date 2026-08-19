@@ -7,6 +7,7 @@ name = "pandera-data-quality-lab"
 version = "1.0.0"
 description = "Problem-driven Pandera learning lab and production-style data-quality pipeline"
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.10"
 dependencies = [
     "pandera[pandas]==0.32.1",
@@ -18,7 +19,6 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
 ]
 
 [project.optional-dependencies]
@@ -27,7 +27,6 @@ dev = [
     "pytest>=8,<10",
     "pytest-cov>=7.1,<8",
     "ruff>=0.16.2,<1",
-    "build==1.5.0",
 ]
 
 [tool.setuptools.packages.find]

@@ -33,15 +33,12 @@
 - unit/contract/integration/regression tests
 - 90% coverage gate
 - Ruff
-- package build gate
 - GitHub Actions matrix
 
-## ✅ Phase 7 — Portfolio and release
-- final architecture
-- cheat sheet
-- capstone
+## ✅ Phase 7 — Architecture and capstone
+- final architecture documentation
+- Pandera cheat sheet
+- capstone audit notebook/challenge
 - master interview preparation
-- contribution/release docs
-- version `1.0.0`
 
-The learning path is complete. Future work should be treated as project extensions rather than hidden “missing phases.”
+The learning path is complete. Future work should be treated as project extensions rather than hidden "missing phases."

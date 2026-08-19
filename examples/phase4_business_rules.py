@@ -1,10 +1,16 @@
 """Demonstrate Phase-4 custom and dataframe-level business rules."""
 
+import sys
 from pathlib import Path
 
-import pandas as pd
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+SRC = PROJECT_ROOT / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
 
-from pandera_lab import (
+import pandas as pd  # noqa: E402
+
+from pandera_lab import (  # noqa: E402
     expected_order_total,
     load_orders_csv,
     summarize_failure_cases,
@@ -12,7 +18,6 @@ from pandera_lab import (
 )
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
 REFERENCE = PROJECT_ROOT / "data" / "reference" / "orders_valid.csv"
 RAW = PROJECT_ROOT / "data" / "raw" / "orders.csv"
 

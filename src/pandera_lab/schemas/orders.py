@@ -70,6 +70,7 @@ class OrderSchema(pa.DataFrameModel):
     @pa.check(
         "customer_id",
         name="customer_id_not_blank",
+        error="customer_id must contain non-whitespace characters",
     )
     def customer_id_not_blank(
         cls,
@@ -81,6 +82,7 @@ class OrderSchema(pa.DataFrameModel):
     @pa.check(
         "product_id",
         name="product_id_not_blank",
+        error="product_id must contain non-whitespace characters",
     )
     def product_id_not_blank(
         cls,
@@ -91,6 +93,10 @@ class OrderSchema(pa.DataFrameModel):
 
     @pa.dataframe_check(
         name="total_matches_formula",
+        error=(
+            "total must equal unit_price * quantity * (1 - discount) "
+            "within the configured currency tolerance"
+        ),
     )
     def total_matches_business_formula(
         cls,
