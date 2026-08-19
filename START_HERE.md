@@ -1,85 +1,39 @@
 # Start Here
 
-## Mission
+## If you are new to this repository
 
-You are working as a junior data engineer on an e-commerce analytics pipeline.
+Follow the material in order.
 
-Every day a file named `orders.csv` arrives from an upstream system. The analytics team discovered that bad data sometimes reaches reports, so your task is to introduce a reliable validation layer.
+### Phase 1 — Understand the problem
 
-For now, **do not clean the data manually**.
+1. Open `notebooks/01_why_data_validation.ipynb`.
+2. Inspect `data/raw/orders.csv`.
+3. Read `docs/01_order_data_contract.md`.
+4. Try `challenges/01_order_schema.md`.
 
-Your first job is to answer:
+### Phase 2 — Build the first executable contract
 
-> What does a valid order look like, and which rows in the raw dataset violate that contract?
+1. Read `docs/02_first_schema.md`.
+2. Open `src/pandera_lab/schemas/orders.py`.
+3. Run `notebooks/02_build_first_schema.ipynb`.
+4. Solve `challenges/02_schema_debugging.md`.
+5. Review `interview/02_schema_design.md`.
+6. Run:
 
-## Step 1 — Open the first notebook
-
-Open:
-
-```text
-notebooks/01_why_data_validation.ipynb
+```bash
+pytest
 ```
 
-Run the cells from top to bottom.
+## Important learning boundary
 
-## Step 2 — Explore the raw dataset
+The Phase-2 schema is deliberately incomplete from a production perspective.
 
-File:
+Do not "fix" these yet unless you are intentionally moving into Phase 3/4:
 
-```text
-data/raw/orders.csv
-```
+- coercion
+- invalid raw dates
+- structured lazy error reports
+- extra-column filtering
+- cross-column validation of `total`
 
-The dataset intentionally contains multiple categories of data-quality problems.
-
-Try to identify problems related to:
-
-- data types
-- missing values
-- duplicate identifiers
-- allowed categories
-- numeric ranges
-- cross-column relationships
-- dates
-
-Do not worry if you cannot find all of them yet.
-
-## Step 3 — Read the business contract
-
-Read:
-
-```text
-docs/01_order_data_contract.md
-```
-
-Separate the requirements into two groups:
-
-### Column-level rules
-
-Rules that can be checked using a single column.
-
-### DataFrame-level rules
-
-Rules that require comparing multiple columns.
-
-## Step 4 — First implementation task
-
-Open:
-
-```text
-src/pandera_lab/schemas/orders.py
-```
-
-It contains a TODO skeleton for `OrderSchema`.
-
-Do not implement everything at once. We will build it progressively and test each decision.
-
-## Learning rule
-
-Whenever a validation fails, do not immediately fix the row. First answer:
-
-1. Which contract was violated?
-2. Is this a structural, dtype, null, uniqueness, range, category, or business-rule error?
-3. Should the pipeline reject the data, coerce it, filter it, or clean it elsewhere?
-
-That distinction is more important than memorizing a Pandera method name.
+These gaps are part of the learning design.

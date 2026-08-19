@@ -4,18 +4,18 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pandera-data-quality-lab"
-version = "0.1.0"
+version = "0.2.0"
 description = "Problem-driven Pandera and data-quality learning project"
 requires-python = ">=3.10"
 dependencies = [
-    "pandera[pandas]",
-    "pandas",
+    "pandera[pandas]==0.32.1",
+    "pandas>=2.1,<3.0",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "jupyterlab",
-    "pytest",
+    "jupyterlab>=4,<5",
+    "pytest>=8,<9",
 ]
 
 [tool.setuptools.packages.find]

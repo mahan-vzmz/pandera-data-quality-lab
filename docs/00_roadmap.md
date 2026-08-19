@@ -2,13 +2,13 @@
 
 This repository grows in phases. Each phase introduces a real data problem first and Pandera syntax second.
 
-## Phase 1 — Understand the contract
+## ✅ Phase 1 — Understand the contract
 
 - Inspect messy order data.
 - Separate structural rules from business rules.
 - Understand why pandas dtypes alone are insufficient.
 
-## Phase 2 — Build the first schema
+## ✅ Phase 2 — Build the first schema
 
 - `DataFrameModel`
 - `Series[...]`
@@ -16,14 +16,16 @@ This repository grows in phases. Each phase introduces a real data problem first
 - `unique`
 - numeric constraints
 - allowed categories
+- first automated schema tests
 
-## Phase 3 — Handle real input problems
+## ⏭️ Phase 3 — Handle real input problems
 
 - coercion
 - nullable values
 - date parsing
 - lazy validation
 - `failure_cases`
+- explicit extra-column policy
 
 ## Phase 4 — Business rules
 

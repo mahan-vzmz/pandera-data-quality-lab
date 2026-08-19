@@ -2,7 +2,7 @@
 
 A problem-driven learning repository for **Pandera**, **Pandas**, and practical **data quality engineering**.
 
-The repository is intentionally designed as both:
+The repository is intentionally designed as:
 
 1. a hands-on Pandera learning path,
 2. a real-world mini data-quality project,
@@ -10,85 +10,123 @@ The repository is intentionally designed as both:
 
 ## Real-world scenario
 
-An e-commerce analytics team receives daily order data as CSV files. The files are not fully trustworthy: columns may have incorrect types, identifiers may be duplicated, business rules may be violated, and derived values such as `total` may be incorrect.
+An e-commerce analytics team receives daily order CSV files. The files are not fully trustworthy: columns may have incorrect types, identifiers may be duplicated, business rules may be violated, and derived values such as `total` may be incorrect.
 
-Your job is to build a **data quality layer** that validates the data before downstream analytics use it.
+The project builds a **data quality layer** that validates data before downstream analytics use it.
 
 ## Learning philosophy
 
-Each topic follows this loop:
+> Problem → inspect → define a contract → validate → understand failures → improve the pipeline
 
-> Problem → inspect the data → define a contract → validate → understand failures → improve the pipeline
-
-The goal is not to memorize Pandera syntax. The goal is to learn how to design **data contracts**.
+The goal is not to memorize syntax. The goal is to learn how to design **data contracts**.
 
 ## Repository map
 
 ```text
 pandera-data-quality-lab/
 ├── data/
-│   ├── raw/                 # Intentionally messy input data
-│   ├── reference/           # Small known-good datasets
-│   └── clean/               # Future validated outputs
-├── notebooks/               # Interactive lessons
-├── docs/                    # Conceptual lesson notes
-├── challenges/              # Exercises without solutions
-├── interview/               # Interview and scenario questions
-├── solutions/               # Added gradually after exercises are solved
-├── src/pandera_lab/         # Production-style Python package
-│   └── schemas/             # Pandera DataFrameModels
-├── tests/                   # pytest tests
-└── reports/                 # Validation error reports
+│   ├── raw/
+│   ├── reference/
+│   └── clean/
+├── notebooks/
+│   ├── 01_why_data_validation.ipynb
+│   └── 02_build_first_schema.ipynb
+├── docs/
+│   ├── 00_roadmap.md
+│   ├── 01_order_data_contract.md
+│   └── 02_first_schema.md
+├── challenges/
+├── interview/
+├── solutions/
+├── examples/
+├── src/pandera_lab/
+│   └── schemas/
+├── tests/
+└── reports/
 ```
 
-## Phase 1: foundations
+## Current status — Phase 2 complete ✅
 
-Start here:
+### Phase 1
 
-1. Read [`START_HERE.md`](START_HERE.md).
-2. Open [`notebooks/01_why_data_validation.ipynb`](notebooks/01_why_data_validation.ipynb).
-3. Inspect [`data/raw/orders.csv`](data/raw/orders.csv).
-4. Read the contract in [`docs/01_order_data_contract.md`](docs/01_order_data_contract.md).
-5. Complete [`challenges/01_order_schema.md`](challenges/01_order_schema.md).
+- inspected the deliberately messy order dataset
+- defined the order data contract
+- classified structural and business rules
 
-Do **not** rush into the solution. First try to identify every problem in the raw dataset yourself.
+### Phase 2
+
+- implemented `OrderSchema` with `DataFrameModel`
+- added dtype expectations
+- added `unique=True` for order IDs
+- added numeric range checks
+- added allowed order statuses
+- added automated pytest coverage
+- added an interactive Phase-2 notebook
+- added debugging exercises and interview questions
+
+### Intentionally not solved yet
+
+Phase 3 will address:
+
+- raw CSV coercion
+- null handling
+- invalid date parsing
+- lazy validation
+- `failure_cases`
+- explicit handling of extra columns
+
+Phase 4 will add the cross-column `total` business rule.
 
 ## Setup
 
-Create and activate a virtual environment, then install the dependencies:
+Create and activate a virtual environment, then:
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-Run JupyterLab:
+Run the notebooks:
 
 ```bash
 jupyter lab
 ```
 
-Run tests later with:
+Run the test suite:
 
 ```bash
 pytest
 ```
 
-## What this repository will eventually demonstrate
+Run the small Phase-2 example:
 
-- Schema-based dataframe validation
-- Dtype validation and coercion
-- Nullable / required / unique constraints
-- Built-in and custom checks
-- Cross-column business rules
-- Lazy validation and failure reports
-- `DataFrameModel` and `Field`
-- `@pa.check` and `@pa.dataframe_check`
-- Function input/output contracts with `@pa.check_types`
-- Validation pipeline architecture
-- Automated tests
-- Interview preparation
-- Portfolio-quality documentation
+```bash
+python examples/phase2_validate_reference.py
+```
 
-## Current status
+## Recommended learning order
 
-**Starter phase.** The repository contains the project structure and deliberately dirty order data. The main `OrderSchema` is intentionally unfinished so it can be implemented as the first practical task.
+1. `notebooks/01_why_data_validation.ipynb`
+2. `docs/01_order_data_contract.md`
+3. `challenges/01_order_schema.md`
+4. `docs/02_first_schema.md`
+5. `notebooks/02_build_first_schema.ipynb`
+6. `challenges/02_schema_debugging.md`
+7. `interview/02_schema_design.md`
+8. run `pytest`
+
+## Core Phase-2 contract
+
+```python
+class OrderSchema(pa.DataFrameModel):
+    order_id: Series[int] = pa.Field(unique=True)
+    customer_id: Series[str]
+    product_id: Series[str]
+    quantity: Series[int] = pa.Field(gt=0)
+    unit_price: Series[float] = pa.Field(gt=0)
+    discount: Series[float] = pa.Field(ge=0, le=1)
+    total: Series[float]
+    status: Series[str] = pa.Field(isin=ALLOWED_ORDER_STATUSES)
+    order_date: Series[DateTime]
+```
+
+This is intentionally an **intermediate contract**, not the final production schema.
